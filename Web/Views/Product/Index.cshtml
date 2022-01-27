@@ -1,0 +1,9 @@
+﻿@model ProductIndexVM
+
+
+@foreach (var item in Model.Products)
+{
+    <span>@item.Category.CategoryName</span>
+  <h1>@item.Name</h1>  
+
+}
