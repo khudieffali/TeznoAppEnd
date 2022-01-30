@@ -17,7 +17,7 @@
 									<p>@(item.Description!=null && item.Description.Length>150 ? item.Description.Substring(0,150):item.Description)</p>
 									<div class="slider-btn">
 										<span class="price">$@item.Price</span>
-										<a href="cart.html" class="default-btn">
+										<a asp-controller="Cart" class="default-btn">
 											Add To Cart
 											<i class="flaticon-right"></i>
 										</a>
@@ -147,7 +147,7 @@
 										</a>
 									</li>
 								</ul>
-								<a href="cart.html" class="default-btn">
+								<a href="javascript:void(0)" pro-id="@item.ID" class="default-btn btn-add-cart">
 									Add To Cart
 									<i class="flaticon-right"></i>
 								</a>
@@ -263,7 +263,7 @@
 									<i class='bx bx-plus' ></i>
 								</span>
 							</form>
-							<a href="cart.html" class="default-btn">
+							<a asp-controller="Cart" class="default-btn">
 								Add To Cart
 								<i class="flaticon-right"></i>
 							</a>
@@ -1035,7 +1035,7 @@
 													</a>
 												</li>
 											</ul>
-											<a href="cart.html" class="default-btn">
+											<a asp-controller="Cart" class="default-btn">
 												Add To Cart
 												<i class="flaticon-right"></i>
 											</a>
@@ -1076,7 +1076,7 @@
 													</a>
 												</li>
 											</ul>
-											<a href="cart.html" class="default-btn">
+											<a asp-controller="Cart" class="default-btn">
 												Add To Cart
 												<i class="flaticon-right"></i>
 											</a>

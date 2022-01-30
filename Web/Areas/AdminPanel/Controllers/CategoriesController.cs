@@ -123,7 +123,7 @@ namespace Web.Areas.AdminPanel.Controllers
         // POST: AdminPanel/Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public IActionResult Delete(int id)
         {
             var selectedCategory = _categoryManager.GetById(id);
            _categoryManager.Delete(selectedCategory);    

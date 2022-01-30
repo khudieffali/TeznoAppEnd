@@ -198,7 +198,7 @@
 											</ul>
 										</div>
 										<div class="cart-wrap">
-											<a class="cart-icon" href="cart.html">
+											<a class="cart-icon" asp-controller="Cart">
 												<i class='bx bx-cart-alt'></i>
 												<span>3</span>
 											</a>
@@ -584,8 +584,8 @@
 		<script src="/assets/js/layerslider.transitions.js"></script>
 		<!-- Kreaturamedia JS -->
 		<script src="/assets/js/layerslider.kreaturamedia.jquery.js"></script>
+		<script type="text/javascript" src="/js/MyCart.js"></script>
 		@await RenderSectionAsync("Scripts" , required:false)
-		
         <!-- Custom JS -->
 		<script src="/assets/js/custom.js"></script>
     </body>

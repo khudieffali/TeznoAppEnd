@@ -76,12 +76,12 @@ namespace Web.Areas.AdminPanel.Controllers
                     string mainFile = Path.Combine(rootFile, fileName);
                     using FileStream stream = new(mainFile, FileMode.Create);
                     PhotoUrl.CopyTo(stream);
-                    product.PhotoUrl = "/uploads/" + fileName;
-                    product.PublishDate = DateTime.Now;
-                    _productManager.Add(product);
-                    return RedirectToAction(nameof(Index));
+                    product.PhotoUrl = "/uploads/" + fileName; 
                 }
-              
+                product.PublishDate = DateTime.Now;
+                _productManager.Add(product);
+                return RedirectToAction(nameof(Index));
+
             }
             return View(product);
         }
@@ -119,9 +119,11 @@ namespace Web.Areas.AdminPanel.Controllers
                         using FileStream str = new(mainFile, FileMode.Create);
                         NewPhoto.CopyTo(str);
                         product.PhotoUrl = "/uploads/" + fileName;
+                     
                     }
                     product.ModifiedOn = DateTime.Now;
                     _productManager.Update(product);
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {

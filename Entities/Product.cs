@@ -11,7 +11,7 @@ namespace Entities
         public decimal Price { get; set; }
         public ushort InStock { get; set; }
         public decimal Discount { get; set; }
-         [Required(ErrorMessage ="Please add a picture!")]
+         //[Required(ErrorMessage ="Please add a picture!")]
         public string? PhotoUrl { get; set; }
         public DateTime PublishDate { get; set; }
         public DateTime? ModifiedOn { get; set; }
