@@ -1,6 +1,7 @@
 ﻿using Entities;
 using Microsoft.AspNetCore.Mvc;
 using Services;
+using Web.ViewModels;
 
 namespace Web.Controllers
 {
@@ -17,13 +18,16 @@ namespace Web.Controllers
         {
             var ProductIdList = Request.Cookies["cartItem"];
             List<Product> productList = null;
+            CartIndexVM vm = new();
             if (ProductIdList != null && ProductIdList != "")
             {
                 List<int> ProductIds = ProductIdList.Split("-").Select(x => int.Parse(x)).ToList();
                 productList= _productManager.GetByIds(ProductIds.Distinct());
+                vm.ProductIds = ProductIds;
+                vm.Products = productList;
             }   
 
-            return View(ProductIdList);
+            return View(vm);
         }
     }
 }
