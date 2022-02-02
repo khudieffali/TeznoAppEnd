@@ -48,7 +48,7 @@ namespace Services
            return selectedProduct ;
         }
       public List<Product?> GetByIds(IEnumerable<int> ids)
-        {
+        {           
             var selectedProducts=_context.Products.Where(pr=>ids.Contains(pr.ID)).ToList();
             return selectedProducts;
         }

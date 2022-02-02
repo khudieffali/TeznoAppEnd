@@ -39,7 +39,7 @@ $(".btn-add-cart").click(function () {
 })
 
 $(".plus-btn").on("click", function () {
-    debugger;
+    let totalPrice = 0;
     const inputVal = Number($(this).parent().find("input").val()) + 1;
     if (inputVal !== 1) {
         $(".minus-btn").css({ "pointer-events": "auto" })
@@ -53,12 +53,16 @@ $(".plus-btn").on("click", function () {
 
     const Price = parseFloat($(this).parent().attr("pro-price"))
     $(this).parents("tr").find(".subtotal-amount").text("$" + Price * inputVal);
-   
-   
+    let subtotal = $(".cart-table .subtotal-amount").text().split("$")
+    for (var i = 1; i < subtotal.length; i++) {
+        totalPrice += parseFloat(subtotal[i])
+    }
+    $(".my-cart-area .cart-totals ul li span b").html(`$${totalPrice}`)
 })
 
 
 $(".minus-btn").on("click", function () {
+    let totalPrice = 0;
     const inputVal = Number($(this).parent().find("input").val()) - 1
     if (inputVal === 1) {
         $(this).css({ "pointer-events": "none" })
@@ -72,5 +76,28 @@ $(".minus-btn").on("click", function () {
 
     const Price = parseFloat($(this).parent().attr("pro-price"))
     $(this).parents("tr").find(".subtotal-amount").text("$" + (Price * inputVal));
+    let subtotal = $(".cart-table .subtotal-amount").text().split("$")
+    for (var i = 1; i < subtotal.length; i++) {
+        totalPrice += parseFloat(subtotal[i])
+    }
+    $(".my-cart-area .cart-totals ul li span b").html(`$${totalPrice}`)
    
+})
+
+$(".product-subtotal .remove").on("click", function () {
+    let totalPrice = 0;
+    const productId = $(this).attr("pro-id")
+    ProductIds = ProductIds.filter(x => x !== productId)
+    setCookie("cartItem", ProductIds.join("-"), 1)
+    $(this).parents("tr").remove()
+    let subtotal = $(".cart-table .subtotal-amount").text().split("$")
+    for (var i = 1; i < subtotal.length; i++) {
+        totalPrice += parseFloat(subtotal[i])
+    }
+    $(".my-cart-area .cart-totals ul li span b").html(`$${totalPrice}`)
+    if ($(".cart-area  table tbody tr").length == 0) {
+        $(".cart-area .my-cart-area").html('<p class="alert alert-danger">Səbətdə Məhsul Yoxdur</p>')
+    }
+
+
 })

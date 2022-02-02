@@ -16,7 +16,7 @@ namespace Web.Controllers
 
         public IActionResult Index()
         {
-            var ProductIdList = Request.Cookies["cartItem"];
+                var ProductIdList = Request.Cookies["cartItem"];
             List<Product> productList = null;
             CartIndexVM vm = new();
             if (ProductIdList != null && ProductIdList != "")
