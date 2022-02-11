@@ -4,13 +4,13 @@
 
 namespace DataAccess.Migrations
 {
-    public partial class DescriptionSual : Migration
+    public partial class addresssual : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Description",
-                table: "Products",
+                name: "Address",
+                table: "Users",
                 type: "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
@@ -20,8 +20,8 @@ namespace DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Description",
-                table: "Products",
+                name: "Address",
+                table: "Users",
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "",

@@ -9,13 +9,13 @@ namespace Web.Controllers
     public class OrdersController : Controller
     {
         private readonly ProductManager _productManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ECommerseUser> _eCommerseUser;
         private readonly OrderManager _orderManager;
-        public OrdersController(ProductManager productManager, UserManager<IdentityUser> userManager, OrderManager orderManager)
+        public OrdersController(ProductManager productManager, UserManager<ECommerseUser> userManager, OrderManager orderManager, UserManager<ECommerseUser> eCommerseUser)
         {
             _productManager = productManager;
-            _userManager = userManager;
             _orderManager = orderManager;
+            _eCommerseUser = eCommerseUser;
         }
 
         public IActionResult Index()
@@ -27,28 +27,33 @@ namespace Web.Controllers
             var ProductIdList = Request.Cookies["cartItem"];
             List<Product> ProductList = null;
             CheckOutVM vm = new();
-            if (ProductIdList != null && ProductIdList != "" )
+            if (ProductIdList != null && ProductIdList != "")
             {
-                List<int> ProductIds=ProductIdList.Split("-").Select(x=>int.Parse(x)).ToList();
+                List<int> ProductIds = ProductIdList.Split("-").Select(x => int.Parse(x)).ToList();
                 ProductList = _productManager.GetByIds(ProductIds.Distinct());
                 vm.Products = ProductList;
                 vm.ProductIds = ProductIds;
-               var selectedUser= await _userManager.FindByNameAsync(User.Identity.Name);
-                if(selectedUser != null)
+                var selectedUser = await _eCommerseUser.GetUserAsync(User);
+                if (selectedUser != null)
                 {
                     vm.CustomerID = selectedUser.Id;
-                    vm.CustomerName = selectedUser.UserName;
+                    vm.CustomerFirstName = selectedUser.FisrtName;
+                    vm.CustomerLastName = selectedUser.LastName;
                     vm.CustomerEmail = selectedUser.Email;
                     vm.CustomerPhone = selectedUser.PhoneNumber;
+                    vm.CustomerAddress = selectedUser.Address;
                 }
-             return View(vm);
+                else
+                {
+                    return RedirectToAction("Login","Account", new {area="Identity" });
+                }
+                return View(vm);
             }
-           return View();
+            return View();
         }
         [HttpPost]
-        public IActionResult CheckOut(CheckOutVM checkOut)
+        public async Task<IActionResult> CheckOut(CheckOutVM checkOut)
         {
-           
             Order newOrder = new();
             var ProductIdList = Request.Cookies["cartItem"];
             List<Product> ProductList = null;
@@ -56,26 +61,37 @@ namespace Web.Controllers
             {
                 List<int> ProductIds = ProductIdList.Split("-").Select(x => int.Parse(x)).ToList();
                 ProductList = _productManager.GetByIds(ProductIds.Distinct());
-                newOrder.CustomerAddress = checkOut.CustomerAddress;
-                newOrder.CustomerPhone=checkOut.CustomerPhone;
-                newOrder.CustomerEmail = checkOut.CustomerEmail;
-                newOrder.CustomerID= checkOut.CustomerID;
-                newOrder.CustomerName = checkOut.CustomerName;  
-                newOrder.TotalAmount = checkOut.TotalAmount;
-                newOrder.OrderCode = Guid.NewGuid().ToString();
-                newOrder.PlacedOn = DateTime.Now;
-                newOrder.OrderItems = new List<OrderItem>();
-                newOrder.OrderItems.AddRange(ProductList.Select(x =>
-                new OrderItem()
+                var selectedUser = await _eCommerseUser.GetUserAsync(User);
+                if (selectedUser != null)
                 {
-                    ProductID = x.ID,
-                    itemPrice = x.Price,
-                    Quantity = (ushort)ProductIds.Where(p => p == x.ID).Count(),
-                    OrderID = newOrder.ID
-                })
-              );
+                    newOrder.CustomerName = selectedUser.UserName;
+                    newOrder.CustomerAddress = checkOut.CustomerAddress;
+                    newOrder.CustomerPhone = checkOut.CustomerPhone;
+                    newOrder.CustomerEmail = selectedUser.Email;
+                    newOrder.CustomerID = selectedUser.Id;
+                    newOrder.TotalAmount = (decimal)checkOut.TotalAmount;
+                    newOrder.OrderCode = Guid.NewGuid().ToString();
+                    newOrder.PlacedOn = DateTime.Now;
+                    newOrder.OrderItems = new List<OrderItem>();
+                    newOrder.OrderItems.AddRange(ProductList.Select(x =>
+                    new OrderItem()
+                    {
+                        ProductID = x.ID,
+                        itemPrice = x.Price,
+                        Quantity = (ushort)ProductIds.Where(p => p == x.ID).Count(),
+                        OrderID = newOrder.ID,
+
+
+                    })
+
+
+
+                  );
+                    newOrder.TotalAmount = newOrder.OrderItems.Select(c => c.Quantity * c.itemPrice).Sum();
+                }
+                _orderManager.Add(newOrder);
+                Response.Cookies.Delete("cartItem");
             }
-            _orderManager.Add(newOrder);
             return View("Index");
         }
     }

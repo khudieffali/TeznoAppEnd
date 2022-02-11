@@ -16,6 +16,10 @@ namespace Services
         {
             _context = context;
         }
+        public List<Order> GetOrders()
+        {
+            return _context.Orders.ToList();
+        }
         public void Add(Order orders)
         {
             _context.Orders.Add(orders);

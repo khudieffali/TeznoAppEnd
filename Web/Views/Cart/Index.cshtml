@@ -96,14 +96,14 @@
 									<div class="row align-items-center">
 										<div class="col-lg-7 col-sm-7 col-md-7">
 											<div class="continue-shopping-box">
-												<a href="#" class="default-btn page-btn">
+												<a asp-controller="Home" class="default-btn page-btn">
 													Continue Shopping
 												</a>
 											</div>
 										</div>
 
 										<div class="col-lg-5 col-sm-5 col-md-5 text-right">
-											<a href="#" class=" default-btn page-btn">
+											<a asp-action="Index" class=" default-btn page-btn">
 												Update Cart
 											</a>
 										</div>
@@ -151,7 +151,7 @@
 											<li>Coupon <span>$20.00</span></li>*@
 											<li>Total <span><b>$@totalPrice</b></span></li>
 										</ul>
-										<a href="#" class="default-btn page-btn">
+										<a asp-controller="Orders" asp-action="checkout" class="default-btn page-btn">
 											Proceed to Checkout
 										</a>
 									</div>

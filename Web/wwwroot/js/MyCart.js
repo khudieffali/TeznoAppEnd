@@ -46,6 +46,7 @@ $(".plus-btn").on("click", function () {
     }
     const productId = $(this).parent().attr("pro-id")
     ProductIds = ProductIds.filter(x => x !== productId)
+    console.log(ProductIds);
     for (let i = 0; i < inputVal; i++) {
         ProductIds.push(productId)
     }

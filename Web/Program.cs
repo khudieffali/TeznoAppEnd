@@ -1,4 +1,5 @@
 using DataAccess;
+using Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +19,7 @@ builder.Services.AddScoped<ProductManager>();
 builder.Services.AddScoped<CategoryManager>();
 builder.Services.AddScoped<OrderManager>();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<ECommerseUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
